@@ -94,3 +94,9 @@ const DisplayController = (() => {
 
     return { render };
 })();
+
+// Initialize players and display the initial gameboard
+const player1 = Player("Player 1", "X");
+const player2 = Player("Player 2", "O");
+let currentPlayer = player1;
+DisplayController.render();
