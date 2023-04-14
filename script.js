@@ -38,3 +38,8 @@ const Gameboard = (() => {
 
     return { setCell, getCell, reset, isGameOver, checkWin, checkTie };
 })();
+
+// Player factory
+const Player = (name, symbol) => {
+    return { name, symbol };
+};
