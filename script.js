@@ -43,3 +43,54 @@ const Gameboard = (() => {
 const Player = (name, symbol) => {
     return { name, symbol };
 };
+
+// DisplayController module
+const DisplayController = (() => {
+    const gameboardDiv = document.getElementById("gameboard");
+    const player1NameInput = document.getElementById("player1-name");
+    const player2NameInput = document.getElementById("player2-name");
+    const startRestartButton = document.getElementById("start-restart");
+    const resultDisplay = document.getElementById("result");
+
+    const render = () => {
+        gameboardDiv.innerHTML = "";
+        for (let i = 0; i < 9; i++) {
+            const cellDiv = document.createElement("div");
+            cellDiv.classList.add("cell");
+            cellDiv.textContent = Gameboard.getCell(i);
+            cellDiv.addEventListener("click", () => handleClick(i));
+            gameboardDiv.appendChild(cellDiv);
+        }
+    };
+
+    const handleClick = (index) => {
+        if (Gameboard.setCell(index, currentPlayer)) {
+            render();
+            if (Gameboard.isGameOver(currentPlayer)) {
+                const result = Gameboard.checkWin(currentPlayer)
+                    ? `${currentPlayer.name} wins!`
+                    : "It's a tie!";
+                resultDisplay.textContent = result;
+            } else {
+                switchPlayer();
+            }
+        }
+    };
+
+    const switchPlayer = () => {
+        currentPlayer = (currentPlayer === player1) ? player2 : player1;
+    };
+
+    startRestartButton.addEventListener("click", () => {
+        const player1Name = player1NameInput.value || "Player 1";
+        const player2Name = player2NameInput.value || "Player 2";
+        player1.name = player1Name;
+        player2.name = player2Name;
+        Gameboard.reset();
+        currentPlayer = player1;
+        resultDisplay.textContent = "";
+        render();
+    });
+
+    return { render };
+})();
